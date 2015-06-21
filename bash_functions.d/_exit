@@ -1,0 +1,7 @@
+# vim: set filetype=sh:
+
+_exit () {
+clear
+printf '%s%s%s\n' "$BOLD$PURPLE" "Houdoe ${USER}!" "${NC}"
+}
+trap _exit EXIT

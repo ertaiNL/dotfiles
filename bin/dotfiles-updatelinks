@@ -1,0 +1,40 @@
+#!/bin/bash
+# updatelinks
+# creates symlinks to a dotfiles repo
+
+# Thanks to Alexander Swan. I got this script from him.
+
+# SETTINGS
+date=$(date +%Y%m%d)
+dotfiles="bash_colours bash_functions.d bash_logout bashrc gitconfig screenrc subversion toprc vim vimrc"
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# SCRIPT
+if [ -d ~/dotfiles ]; then
+  echo "Updating dotfile-links"
+
+  [ -d ~/bin ]|| mkdir ~/bin
+
+  for dotfile in ${dotfiles};do
+    [ -L ~/.${dotfile} ] && rm ~/.${dotfile}
+    [ -f ~/.${dotfile} -o -d ~/.${dotfile} ] && mv ~/.${dotfile} ~/.${dotfile}-bck-dotfiles-${date}
+    ln -s ~/dotfiles/${dotfile} ~/.${dotfile}
+  done
+
+  ln -sf ~/dotfiles/dircolors-dark ~/.dircolors
+  ln -sf ~/dotfiles/bin/dotfiles-update ~/bin/dotfiles-update
+  ln -sf ~/dotfiles/bin/dotfiles-updatelinks ~/bin/dotfiles-updatelinks
+  ln -sf ~/dotfiles/bin/dotfiles-testcolours.pl ~/bin/dotfiles-testcolours.pl
+  ln -sf ~/dotfiles/subversion/servers_general ~/dotfiles/subversion/servers
+
+  if hash symlinks 2>/dev/null; then
+    symlinks -d ~/bin
+  fi
+
+  source ~/.bashrc
+else #not in the correct path
+  echo "have you cloned dotfiles to your homedir?"
+  exit 1
+fi
+# END
+

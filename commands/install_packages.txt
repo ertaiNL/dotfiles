@@ -1,0 +1,6 @@
+#rhel6
+sudo yum install screen subversion vim symlinks
+#rhel5
+sudo yum install screen subversion vim symlinks
+#ubuntu
+sudo apt-get install screen subversion vim symlinks ncurses-term

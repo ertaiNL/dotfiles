@@ -1,0 +1,29 @@
+# vim: set filetype=sh:
+
+display-stat() {
+#hostname
+  DISTRO="$(get-distro)"
+  UPTIME="$(uptime | cut -d' ' -f'4,5' | sed -nu 's?[ ]*\(.*\),?\1?pg')"
+  printf "dist: $GREEN%-30s$NC  up: $GREEN%s$NC\n" "$DISTRO" "$UPTIME"
+
+  MEMORY="$(free -m | egrep 'Mem:|-/\+' | tr [:space:] ' ' | tr -s ' ' | cut -d' ' -f11,2 --output-delimiter="/")"
+  CALC_MEMORY="$(echo $MEMORY | awk -F'/' '{if ($2 < 100) print(2); else if (($1 < 4000 && $2 < 250)||($2 < 500)) print(1); else print(0); }')"
+  if [ $CALC_MEMORY -eq 2 ]; then COLOR_MEMORY=$RED; elif [ $CALC_MEMORY -eq 1 ]; then COLOR_MEMORY=$YELLOW; else COLOR_MEMORY=$GREEN; fi
+  CPUS="$(cat /proc/cpuinfo | grep -ci 'processor')"
+  LOAD="$CPUS $(cat /proc/loadavg | cut -d' ' -f'1,2,3,4')"
+  CALC_LOAD="$(echo $LOAD | awk '{if ($2>$1*2 || $3>$1*2 || $4>$1*2) print(2); else if ($2>$1 || $3>$1 || $4>$1) print(1); else print(0);}')"
+  if [ $CALC_LOAD -eq 2 ]; then COLOR_LOAD=$RED; elif [ $CALC_LOAD -eq 1 ]; then COLOR_LOAD=$YELLOW; else COLOR_LOAD=$GREEN; fi
+  printf "load: $COLOR_LOAD#%-29s$NC mem: $COLOR_MEMORY%-11s MB$NC \n" "$LOAD" "$MEMORY"
+
+  if hash svn 2>/dev/null; then
+    DOTF="$(svn info ~/dotfiles | grep "Last Changed Rev:" | cut -d' ' -f4)"
+    printf "dotf: $GREEN%s$NC\n" "$DOTF"
+  fi
+
+  if hash screen 2>/dev/null; then
+    SCRE=$(screen -list | grep '(' | sed -e 's/^[ \t]*/ /g')
+    if [ -z $STY ] && [[ $SCRE != "" ]]; then
+      echo -e "$GREEN$SCRE$NC"
+    fi
+  fi
+}

@@ -1,0 +1,20 @@
+# vim: set filetype=sh:
+
+get-distro() {
+#Distro+version
+  ARCH="$(uname -p)"
+  if [ -f /etc/redhat-release ]; then
+    OS=$(cat /etc/redhat-release | sed -nu 's?Red Hat Enterprise Linux Server?RHEL?p' | cut -d' ' -f1,3)
+  elif [ -f /etc/SuSE-release ]; then
+    OS=$(cat /etc/SuSE-release | tr '\n' ' ' | sed -nu 's/ PATCHLEVEL = /./p' | cut -d' ' -f1,9)
+  elif [ -f /etc/issue.net ]; then
+    OS=$(cat /etc/issue.net)
+  else
+    OS="UNIX-Like"
+  fi
+  if [[ "$__resultvar" ]]; then
+    eval $__resultvar="'$OS $ARCH'"
+  else
+    echo "$OS $ARCH"
+  fi
+}

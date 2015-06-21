@@ -1,0 +1,8 @@
+#!/bin/bash
+if hash svn 2>/dev/null; then
+  svn update ~/dotfiles
+else
+  echo "No Subversion found"
+fi
+dotfiles-updatelinks
+#END

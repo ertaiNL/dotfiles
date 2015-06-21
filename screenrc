@@ -1,0 +1,21 @@
+startup_message off	#skip startup message
+escape ^Aa		#screen escape key
+vbell on		#visible bell no sound
+autodetach on		#detach on hangup
+pow_detach_msg "Screen of \$LOGNAME \$:cr:\$:nl:end" #say goodby
+defmonitor on		#turn on the blink at activity in window
+defscrollback 3000	#scrollback 3000 lines
+shell bash		#the shell to start
+shelltitle |		#the name of the shell
+attrcolor u c		#hardstatus in a blue line
+caption always "%{wm}%w %=| %D %0c | %H | %l" #what to print as status
+term xterm-256color
+
+#register S ^||
+#bind "^[x" process S	#rebind command-key screen to alt-x
+bindkey ^X mapdefault	#key for searching in your screens
+bind j focus down	#move down a window like vim
+bind k focus up		#move up a window like vim
+bind ^k			#remove the kill window
+bind .			#remove dump termcap
+bind 'K' kill		#the kill-command
