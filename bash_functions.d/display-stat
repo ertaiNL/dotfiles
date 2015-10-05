@@ -15,9 +15,13 @@ display-stat() {
   if [ $CALC_LOAD -eq 2 ]; then COLOR_LOAD=$RED; elif [ $CALC_LOAD -eq 1 ]; then COLOR_LOAD=$YELLOW; else COLOR_LOAD=$GREEN; fi
   printf "load: $COLOR_LOAD#%-29s$NC mem: $COLOR_MEMORY%-11s MB$NC \n" "$LOAD" "$MEMORY"
 
-  if hash svn 2>/dev/null; then
-    DOTF="$(svn info ~/dotfiles | grep "Last Changed Rev:" | cut -d' ' -f4)"
-    printf "dotf: $GREEN%s$NC\n" "$DOTF"
+  if hash git 2>/dev/null; then
+    DOTF="$(cd ~/dotfiles && git log HEAD..origin/master --oneline && cd ~)"
+    if [[ "${reslog}" == "" ]] ; then
+      printf "dotf: $GREEN%s$NC\n" "up-to-date"
+    else
+      printf "dotf: $RED%s$NC\n" "out-of-date"
+    fi
   fi
 
   if hash screen 2>/dev/null; then

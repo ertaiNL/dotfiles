@@ -6,14 +6,15 @@
 
 # SETTINGS
 date=$(date +%Y%m%d)
-dotfiles="bash_colours bash_functions.d bash_logout bashrc gitconfig screenrc subversion toprc vim vimrc"
+dotfiles="bash_colours bash_functions.d bash_logout bashrc screenrc subversion toprc vim vimrc"
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # SCRIPT
 if [ -d ~/dotfiles ]; then
   echo "Updating dotfile-links"
 
-  [ -d ~/bin ]|| mkdir ~/bin
+  [ -d ~/bin ] || mkdir ~/bin
+  [ -f ~/.gitconfig] || cp ~/dotfiles/templates/gitconfig ~/dotfiles/.gitconfig
 
   for dotfile in ${dotfiles};do
     [ -L ~/.${dotfile} ] && rm ~/.${dotfile}

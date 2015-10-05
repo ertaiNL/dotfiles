@@ -1,8 +1,8 @@
 #!/bin/bash
-if hash svn 2>/dev/null; then
-  svn update ~/dotfiles
+if hash git 2>/dev/null; then
+  cd ~/dotfiles && git pull -r
 else
-  echo "No Subversion found"
+  echo "No Git found"
 fi
 dotfiles-updatelinks
 #END
