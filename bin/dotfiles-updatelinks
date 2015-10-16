@@ -14,7 +14,7 @@ if [ -d ~/dotfiles ]; then
   echo "Updating dotfile-links"
 
   [ -d ~/bin ] || mkdir ~/bin
-  [ -f ~/.gitconfig] || cp ~/dotfiles/templates/gitconfig ~/dotfiles/.gitconfig
+  [ -f ~/.gitconfig ] || cp ~/dotfiles/templates/gitconfig ~/dotfiles/.gitconfig
 
   for dotfile in ${dotfiles};do
     [ -L ~/.${dotfile} ] && rm ~/.${dotfile}
