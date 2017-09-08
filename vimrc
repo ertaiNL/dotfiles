@@ -30,7 +30,9 @@ set ruler			" show the cursor position all the time
 set backspace=indent,eol,start	" allow backspacing over everything in insert mode
 set showmatch			" show matching brackets
 set softtabstop=2		" Replace tabs with 2 spaces
-set noai			" Disable auto-indenting at paste
+set tabstop=2			" appear tabs as 2 spaces
+set shiftwidth=2
+" set noai			" Disable auto-indenting at paste
 set pastetoggle=<C-p>
 
 " search options
