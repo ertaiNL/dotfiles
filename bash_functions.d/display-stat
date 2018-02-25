@@ -6,8 +6,10 @@ display-stat() {
   UPTIME="$(uptime | cut -d' ' -f'4,5' | sed -nu 's?[ ]*\(.*\),?\1?pg')"
   printf "dist: $GREEN%-30s$NC  up: $GREEN%s$NC\n" "$DISTRO" "$UPTIME"
 
-  MEMORY="$(free -m | egrep 'Mem:|-/\+' | tr [:space:] ' ' | tr -s ' ' | cut -d' ' -f11,2 --output-delimiter="/")"
-  CALC_MEMORY="$(echo $MEMORY | awk -F'/' '{if ($2 < 100) print(2); else if (($1 < 4000 && $2 < 250)||($2 < 500)) print(1); else print(0); }')"
+  AVAIL_MEMORY="$(free -m | egrep 'Mem:|-/\+' | tr [:space:] ' ' | tr -s ' ' | cut -d' ' -f2)"
+  FREE_MEMORY="$(free -m | egrep 'Mem:|-/\+' | tr [:space:] ' ' | tr -s ' ' | cut -d' ' -f4)"
+	MEMORY=$(echo $FREE_MEMORY/$AVAIL_MEMORY)
+  CALC_MEMORY="$(echo $MEMORY | awk -F'/' '{if ($2-$1 < 250) print(2); else if ($2-$1 < 1024) print(1); else print(0); }')"
   if [ $CALC_MEMORY -eq 2 ]; then COLOR_MEMORY=$RED; elif [ $CALC_MEMORY -eq 1 ]; then COLOR_MEMORY=$YELLOW; else COLOR_MEMORY=$GREEN; fi
   CPUS="$(cat /proc/cpuinfo | grep -ci 'processor')"
   LOAD="$CPUS $(cat /proc/loadavg | cut -d' ' -f'1,2,3,4')"
